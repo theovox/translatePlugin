@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>翻译助手 - 设置</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      color: #333;
+      background: #f5f5f5;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: #1a1a1a;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .card h2 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+    }
+    .form-row {
+      margin-bottom: 14px;
+    }
+    .form-row:last-child {
+      margin-bottom: 0;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    .hint {
+      font-size: 12px;
+      color: #999;
+      margin-top: 3px;
+    }
+    select, input[type="text"], input[type="password"], textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      background: #fafafa;
+      font-family: inherit;
+    }
+    select:focus, input:focus, textarea:focus {
+      border-color: #1a73e8;
+      background: #fff;
+    }
+    textarea {
+      height: 80px;
+      resize: vertical;
+    }
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+    .row > .form-row { flex: 1; }
+    .radio-group {
+      display: flex;
+      gap: 16px;
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .radio-group input[type="radio"], .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .btn {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-primary {
+      background: #1a73e8;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #1557b0; }
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+    .btn-secondary:hover { background: #e0e0e0; }
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a73e8;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(26,115,232,0.3);
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.2s;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .llm-section {
+      display: none;
+    }
+    .llm-section.visible {
+      display: block;
+    }
+    .test-result {
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+    .test-result.success {
+      display: block;
+      background: #e6f4ea;
+      color: #137333;
+    }
+    .test-result.error {
+      display: block;
+      background: #fce8e6;
+      color: #c5221f;
+    }
+    .engine-list {
+      list-style: none;
+    }
+    .engine-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .engine-item:last-child {
+      border-bottom: none;
+    }
+    .engine-toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .engine-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .engine-toggle .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #ccc;
+      border-radius: 22px;
+      transition: 0.2s;
+    }
+    .engine-toggle .slider:before {
+      content: "";
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    .engine-toggle input:checked + .slider {
+      background: #1a73e8;
+    }
+    .engine-toggle input:checked + .slider:before {
+      transform: translateX(18px);
+    }
+    .engine-info {
+      margin-left: 12px;
+      flex: 1;
+    }
+    .engine-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+    .engine-desc {
+      font-size: 12px;
+      color: #999;
+      margin-top: 2px;
+    }
+    .engine-item.disabled .engine-name {
+      color: #bbb;
+    }
+    .engine-item.disabled .engine-desc {
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>翻译助手 设置</h1>
+
+    <div class="card">
+      <h2>基本设置</h2>
+      <div class="row">
+        <div class="form-row">
+          <label>翻译引擎</label>
+          <select id="engine"></select>
+        </div>
+        <div class="form-row">
+          <label>目标语言</label>
+          <select id="targetLang"></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>显示模式</label>
+        <div class="radio-group">
+          <label><input type="radio" name="displayMode" value="bilingual" checked> 双语对照</label>
+          <label><input type="radio" name="displayMode" value="replace"> 替换原文</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="autoTranslate"> 自动翻译新页面</label>
+        </div>
+        <div class="hint">开启后，每次打开新页面会自动翻译。也可用 <strong>Alt+A</strong> 快捷切换</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>翻译通道管理</h2>
+      <div class="hint" style="margin-bottom: 12px">启用或停用翻译通道，停用的通道不会出现在引擎选择列表中</div>
+      <ul class="engine-list" id="engineList"></ul>
+    </div>
+
+    <div class="card llm-section" id="llmSection">
+      <h2>自定义大模型 API</h2>
+      <div class="form-row">
+        <label>API 地址</label>
+        <input type="text" id="llmEndpoint" placeholder="https://api.openai.com/v1">
+        <div class="hint">填写 OpenAI 兼容接口地址，会自动补全 /chat/completions</div>
+      </div>
+      <div class="row">
+        <div class="form-row">
+          <label>API 密钥</label>
+          <input type="password" id="llmApiKey" placeholder="sk-...">
+        </div>
+        <div class="form-row">
+          <label>模型名称</label>
+          <input type="text" id="llmModel" placeholder="gpt-3.5-turbo">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>系统提示词</label>
+        <textarea id="llmSystemPrompt" placeholder="你是一个专业翻译助手..."></textarea>
+        <div class="hint">使用 {targetLang} 作为目标语言占位符</div>
+      </div>
+      <button class="btn btn-secondary" id="testLLM">测试连接</button>
+      <div class="test-result" id="testResult"></div>
+    </div>
+
+    <div class="card">
+      <h2>快捷键</h2>
+      <div class="form-row">
+        <div class="hint">
+          <strong>Alt+T</strong> — 翻译当前页面<br>
+          <strong>Alt+S</strong> — 翻译选中文本<br>
+          <strong>Alt+R</strong> — 切换显示原文/译文（翻译后可用）<br>
+          <strong>Alt+A</strong> — 开关自动翻译新页面<br><br>
+          Alt+T 和 Alt+S 可在 Chrome 扩展快捷键设置页面修改：<br>
+          <code>chrome://extensions/shortcuts</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="saveBtn">保存设置</button>
+      <button class="btn btn-secondary" id="resetBtn">恢复默认</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="options.js"></script>
+</body>
+</html>

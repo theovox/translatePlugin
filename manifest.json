@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "翻译助手",
+  "version": "1.0.0",
+  "description": "网页翻译插件 - 支持整页翻译、选中翻译，内置多种翻译引擎及自定义大模型API",
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://translate.googleapis.com/*",
+    "https://edge.microsoft.com/*",
+    "https://api.cognitive.microsofttranslator.com/*",
+    "https://transmart.qq.com/*",
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "translate-page": {
+      "suggested_key": {
+        "default": "Alt+T"
+      },
+      "description": "翻译当前页面"
+    },
+    "translate-selection": {
+      "suggested_key": {
+        "default": "Alt+S"
+      },
+      "description": "翻译选中文本"
+    }
+  }
+}
