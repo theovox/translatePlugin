@@ -1,0 +1,2 @@
+# translatePlugin
+Chrome Plugin
