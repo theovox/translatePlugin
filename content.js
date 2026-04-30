@@ -348,11 +348,23 @@
     }
   });
 
+  function isChinesePage() {
+    const lang = (document.documentElement.lang || '').toLowerCase();
+    if (lang.startsWith('zh')) return true;
+
+    // 采样页面文本判断是否为中文
+    const sample = document.body?.innerText?.slice(0, 500) || '';
+    const chineseChars = sample.match(/[一-鿿]/g);
+    if (chineseChars && chineseChars.length > sample.length * 0.3) return true;
+
+    return false;
+  }
+
   // 自动翻译：页面加载时检查设置
   async function checkAutoTranslate() {
     try {
       const settings = await sendMessage({ action: 'getSettings' });
-      if (settings.autoTranslate) {
+      if (settings.autoTranslate && !isChinesePage()) {
         setTimeout(() => translatePage(), 500);
       }
     } catch {}
@@ -390,7 +402,7 @@
 
     try {
       const settings = await sendMessage({ action: 'getSettings' });
-      if (settings.autoTranslate) {
+      if (settings.autoTranslate && !isChinesePage()) {
         setTimeout(() => translatePage(), 800);
       }
     } catch {}
